@@ -161,6 +161,19 @@ ul { list-style: none; }
   overflow: hidden;
   border-bottom: 1px solid var(--gray-200);
 }
+.hero-art {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 94%;
+  max-width: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+@media (max-width: 768px) {
+  .hero-art { max-width: 78%; opacity: 0.5; }
+}
 .hero::after {
   content: '';
   position: absolute; inset: 0;

@@ -22,7 +22,14 @@
     .filter-bar { display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px; }
     .filter-btn { padding:7px 16px;border-radius:20px;border:1.5px solid var(--gray-200);background:var(--white);font-size:0.8rem;font-weight:600;cursor:pointer;color:var(--gray-600);transition:all 0.2s; }
     .filter-btn.active,.filter-btn:hover { background:var(--navy);color:var(--white);border-color:var(--navy); }
-    .school-heading { font-size:1.1rem;font-weight:700;color:var(--navy);margin:32px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:10px; }
+    .school-heading { font-size:1.1rem;font-weight:700;color:var(--navy);margin:32px 0 16px;padding:12px 18px;border-radius:8px;border-left:5px solid rgba(0,0,0,0.12);display:flex;align-items:center;gap:10px; }
+    .sh-violet { background:#f3e8fb; border-left-color:#8e44ad; }
+    .sh-indigo { background:#e8eaf6; border-left-color:#3f51b5; }
+    .sh-blue   { background:#e3f0fb; border-left-color:#2980b9; }
+    .sh-green  { background:#e7f6ea; border-left-color:#27ae60; }
+    .sh-yellow { background:#fdf6da; border-left-color:#d4a700; }
+    .sh-orange { background:#fdeede; border-left-color:#e67e22; }
+    .sh-red    { background:#fdebe9; border-left-color:#e74c3c; }
     .school-count { font-size:0.75rem;font-weight:600;background:var(--navy);color:var(--white);padding:2px 10px;border-radius:12px; }
     .no-results { display:none;text-align:center;padding:40px;color:var(--gray-400); }
     @media(max-width:900px){ .supervisor-grid{grid-template-columns:1fr 1fr;} }
@@ -68,7 +75,7 @@
 
   <!-- ENGINEERING -->
   <div class="school-section" data-school="Engineering">
-    <div class="school-heading">🏗️ Faculty of Engineering &amp; Technology <span class="school-count">12 supervisors</span></div>
+    <div class="school-heading sh-violet">🏗️ Faculty of Engineering &amp; Technology <span class="school-count">12 supervisors</span></div>
     <div class="supervisor-grid">
       <div class="supervisor-card" data-search-item data-school="Engineering">
         <div class="sup-header"><div class="sup-avatar">PK</div><div class="sup-name">Dr. Praveen Kumar P</div><div class="sup-desig">Professor</div><div class="sup-dept">Dept. of Computer Science &amp; Engineering</div></div>
@@ -123,7 +130,7 @@
 
   <!-- ALLIED & HEALTH SCIENCES -->
   <div class="school-section" data-school="Allied & Health Sciences">
-    <div class="school-heading">🏥 Faculty of Allied &amp; Health Sciences <span class="school-count">13 supervisors</span></div>
+    <div class="school-heading sh-indigo">🏥 Faculty of Allied &amp; Health Sciences <span class="school-count">13 supervisors</span></div>
     <div class="supervisor-grid">
       <div class="supervisor-card" data-search-item data-school="Allied & Health Sciences">
         <div class="sup-header"><div class="sup-avatar">JV</div><div class="sup-name">Dr. Jayachandran Venkatesan</div><div class="sup-desig">Professor</div><div class="sup-dept">Dept. of Biomaterials &amp; Transplant Sciences</div></div>
@@ -182,7 +189,7 @@
 
   <!-- MEDICINE -->
   <div class="school-section" data-school="Medicine">
-    <div class="school-heading">🩺 Faculty of Medical Sciences <span class="school-count">17 supervisors</span></div>
+    <div class="school-heading sh-blue">🩺 Faculty of Medical Sciences <span class="school-count">17 supervisors</span></div>
     <div class="supervisor-grid">
       <div class="supervisor-card" data-search-item data-school="Medicine">
         <div class="sup-header"><div class="sup-avatar">RS</div><div class="sup-name">Dr. Rohit Singh T</div><div class="sup-desig">Professor</div><div class="sup-dept">Dept. of Pharmacology</div></div>
@@ -257,7 +264,7 @@
 
   <!-- PHARMACEUTICAL SCIENCES -->
   <div class="school-section" data-school="Pharmaceutical Sciences">
-    <div class="school-heading">💊 Faculty of Pharmaceutical Sciences <span class="school-count">14 supervisors</span></div>
+    <div class="school-heading sh-green">💊 Faculty of Pharmaceutical Sciences <span class="school-count">14 supervisors</span></div>
     <div class="supervisor-grid">
       <div class="supervisor-card" data-search-item data-school="Pharmaceutical Sciences">
         <div class="sup-header"><div class="sup-avatar">JL</div><div class="sup-name">Dr. Jyothi Rani Lade</div><div class="sup-desig">Professor</div><div class="sup-dept">Dept. of Pharmaceutics</div></div>
@@ -320,7 +327,7 @@
 
   <!-- DENTISTRY -->
   <div class="school-section" data-school="Dentistry">
-    <div class="school-heading">🦷 Faculty of Dental Sciences <span class="school-count">4 supervisors</span></div>
+    <div class="school-heading sh-yellow">🦷 Faculty of Dental Sciences <span class="school-count">4 supervisors</span></div>
     <div class="supervisor-grid">
       <div class="supervisor-card" data-search-item data-school="Dentistry">
         <div class="sup-header"><div class="sup-avatar">KR</div><div class="sup-name">Dr. Karthikeyan R</div><div class="sup-desig">Professor</div><div class="sup-dept">Dept. of Oral Pathology &amp; Microbiology</div></div>
@@ -343,7 +350,7 @@
 
   <!-- MANAGEMENT -->
   <div class="school-section" data-school="Management">
-    <div class="school-heading">📊 Faculty of Management Studies <span class="school-count">3 supervisors</span></div>
+    <div class="school-heading sh-orange">📊 Faculty of Management Studies <span class="school-count">3 supervisors</span></div>
     <div class="supervisor-grid">
       <div class="supervisor-card" data-search-item data-school="Management">
         <div class="sup-header"><div class="sup-avatar">VK</div><div class="sup-name">Dr. Vidhyapriyadharshini K</div><div class="sup-desig">Associate Professor</div><div class="sup-dept">Dept. of Management Studies</div></div>
@@ -362,7 +369,7 @@
 
   <!-- DIGITAL HEALTH -->
   <div class="school-section" data-school="Digital Health">
-    <div class="school-heading">💻 Faculty of Digital Health Sciences <span class="school-count">1 supervisor</span></div>
+    <div class="school-heading sh-red">💻 Faculty of Digital Health Sciences <span class="school-count">1 supervisor</span></div>
     <div class="supervisor-grid">
       <div class="supervisor-card" data-search-item data-school="Digital Health">
         <div class="sup-header"><div class="sup-avatar">GS</div><div class="sup-name">Dr. Gadhave Swapnil Anil</div><div class="sup-desig">Associate Professor</div><div class="sup-dept">Dept. of Digital Health</div></div>
@@ -373,7 +380,7 @@
 
   <!-- NURSING -->
   <div class="school-section" data-school="Nursing">
-    <div class="school-heading">🏨 Faculty of Nursing Sciences <span class="school-count">2 supervisors</span></div>
+    <div class="school-heading sh-violet">🏨 Faculty of Nursing Sciences <span class="school-count">2 supervisors</span></div>
     <div class="supervisor-grid">
       <div class="supervisor-card" data-search-item data-school="Nursing">
         <div class="sup-header"><div class="sup-avatar">SS</div><div class="sup-name">Dr. S. Sudha Rani</div><div class="sup-desig">Professor</div><div class="sup-dept">Dept. of Nursing</div></div>
@@ -388,7 +395,7 @@
 
   <!-- PUBLIC HEALTH -->
   <div class="school-section" data-school="Public Health">
-    <div class="school-heading">🌍 Faculty of Public Health <span class="school-count">1 supervisor</span></div>
+    <div class="school-heading sh-indigo">🌍 Faculty of Public Health <span class="school-count">1 supervisor</span></div>
     <div class="supervisor-grid">
       <div class="supervisor-card" data-search-item data-school="Public Health">
         <div class="sup-header"><div class="sup-avatar">AS</div><div class="sup-name">Dr. Anshuman Sewda</div><div class="sup-desig">Professor</div><div class="sup-dept">Dept. of Public Health</div></div>

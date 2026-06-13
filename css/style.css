@@ -249,10 +249,11 @@ ul { list-style: none; }
 }
 .card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(26,45,90,0.14); }
 .card-icon {
-  background: linear-gradient(135deg, var(--navy) 0%, #1e4080 100%);
+  background: linear-gradient(135deg, var(--gray-100) 0%, #e6ecf8 100%);
   padding: 28px;
   text-align: center;
   font-size: 2.2rem;
+  border-bottom: 1px solid var(--gray-200);
 }
 .card-body { padding: 22px; }
 .card-title { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }

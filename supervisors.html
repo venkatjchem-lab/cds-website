@@ -8,11 +8,20 @@
     .supervisor-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
     .supervisor-card { background:var(--white); border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; transition:box-shadow 0.2s; }
     .supervisor-card:hover { box-shadow:var(--shadow); }
-    .sup-header { background:linear-gradient(135deg,var(--navy),#1e4080); padding:20px; text-align:center; }
+    .sup-header { background:linear-gradient(135deg,var(--gray-100),#e6ecf8); padding:20px; text-align:center; border-bottom:1px solid rgba(0,0,0,0.06); }
+    .school-section[data-school="Engineering"] .sup-header           { background:linear-gradient(135deg,#f3e8fb,#e7d4f5); }
+    .school-section[data-school="Allied & Health Sciences"] .sup-header { background:linear-gradient(135deg,#e8eaf6,#d6dbf0); }
+    .school-section[data-school="Medicine"] .sup-header              { background:linear-gradient(135deg,#e3f0fb,#cfe3f6); }
+    .school-section[data-school="Pharmaceutical Sciences"] .sup-header { background:linear-gradient(135deg,#e7f6ea,#d3edd9); }
+    .school-section[data-school="Dentistry"] .sup-header             { background:linear-gradient(135deg,#fdf6da,#f6ebc0); }
+    .school-section[data-school="Management"] .sup-header            { background:linear-gradient(135deg,#fdeede,#f9ddc4); }
+    .school-section[data-school="Digital Health"] .sup-header        { background:linear-gradient(135deg,#fdebe9,#f8d8d4); }
+    .school-section[data-school="Nursing"] .sup-header               { background:linear-gradient(135deg,#f3e8fb,#e7d4f5); }
+    .school-section[data-school="Public Health"] .sup-header         { background:linear-gradient(135deg,#e8eaf6,#d6dbf0); }
     .sup-avatar { width:60px;height:60px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 10px;font-weight:700;color:var(--navy-dark); }
-    .sup-name { color:var(--white);font-weight:700;font-size:0.9rem; }
-    .sup-desig { color:rgba(255,255,255,0.6);font-size:0.72rem;margin-top:2px; }
-    .sup-dept { color:rgba(255,255,255,0.75);font-size:0.75rem;margin-top:3px; }
+    .sup-name { color:var(--navy);font-weight:700;font-size:0.9rem; }
+    .sup-desig { color:var(--gray-600);font-size:0.72rem;margin-top:2px; }
+    .sup-dept { color:var(--gray-600);font-size:0.75rem;margin-top:3px; }
     .sup-body { padding:14px; }
     .sup-tag { display:inline-block;background:var(--gray-100);color:var(--navy);font-size:0.68rem;font-weight:600;padding:2px 8px;border-radius:10px;margin:2px; }
     .sup-meta { font-size:0.78rem;color:var(--gray-600);margin-top:10px;display:flex;justify-content:space-between;align-items:center; }
@@ -52,7 +61,7 @@
   </ul>
 </div></div></header>
 
-<div class="page-hero"><div class="container"><div class="breadcrumb"><a href="index.html">Home</a> › <span>Supervisors / Faculty</span></div><h1>Research Supervisors</h1><p style="color:rgba(255,255,255,0.75);margin-top:8px;">Our approved Ph.D. supervisors across all faculties — actively guiding doctoral research.</p></div></div>
+<div class="page-hero"><div class="container"><div class="breadcrumb"><a href="index.html">Home</a> › <span>Supervisors / Faculty</span></div><h1>Research Supervisors</h1><p style="color:var(--gray-600);margin-top:8px;">Our approved Ph.D. supervisors across all faculties — actively guiding doctoral research.</p></div></div>
 
 <section class="section"><div class="container">
 
@@ -411,7 +420,7 @@
   </div>
 </div></section>
 
-<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="site-logo" style="margin-bottom:12px;display:inline-flex;"><div class="logo-icon" style="width:40px;height:40px;font-size:1.1rem;">🎓</div><div class="logo-text"><div class="univ" style="color:rgba(255,255,255,0.5);">Malla Reddy Vishwavidyapeeth</div><div class="dept" style="font-size:0.9rem;">Centre for Doctoral Studies</div></div></a><p>Fostering research excellence and nurturing doctoral scholars.</p></div><div class="footer-section"><h4>Admissions</h4><ul><li><a href="https://mrvv.edu.in/#" target="_blank" rel="noopener">Apply Now</a></li><li><a href="eligibility.html">Eligibility</a></li><li><a href="regulations.html">Regulations</a></li></ul></div><div class="footer-section"><h4>Academics</h4><ul><li><a href="programs.html">Programs</a></li><li><a href="scholars.html">Scholars</a></li></ul></div><div class="footer-section"><h4>Resources</h4><ul><li><a href="forms.html">Forms</a></li><li><a href="faq.html">FAQs</a></li><li><a href="contact.html">Contact</a></li></ul></div></div><div class="footer-bottom"><span>© 2025 Centre for Doctoral Studies, Malla Reddy Vishwavidyapeeth.</span></div></div></footer>
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="site-logo" style="margin-bottom:12px;display:inline-flex;"><div class="logo-icon" style="width:40px;height:40px;font-size:1.1rem;">🎓</div><div class="logo-text"><div class="univ" style="color:var(--gray-600);">Malla Reddy Vishwavidyapeeth</div><div class="dept" style="font-size:0.9rem;">Centre for Doctoral Studies</div></div></a><p>Fostering research excellence and nurturing doctoral scholars.</p></div><div class="footer-section"><h4>Admissions</h4><ul><li><a href="https://mrvv.edu.in/#" target="_blank" rel="noopener">Apply Now</a></li><li><a href="eligibility.html">Eligibility</a></li><li><a href="regulations.html">Regulations</a></li></ul></div><div class="footer-section"><h4>Academics</h4><ul><li><a href="programs.html">Programs</a></li><li><a href="scholars.html">Scholars</a></li></ul></div><div class="footer-section"><h4>Resources</h4><ul><li><a href="forms.html">Forms</a></li><li><a href="faq.html">FAQs</a></li><li><a href="contact.html">Contact</a></li></ul></div></div><div class="footer-bottom"><span>© 2025 Centre for Doctoral Studies, Malla Reddy Vishwavidyapeeth.</span></div></div></footer>
 
 <script src="js/main.js?v=5"></script>
 <script>

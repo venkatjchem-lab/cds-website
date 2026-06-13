@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academic Calendar | Centre for Doctoral Studies</title>
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <style>
+    .cal-month { margin-bottom:40px; }
+    .cal-month h3 { font-size:1.1rem; font-weight:700; color:var(--navy); background:var(--gray-100); padding:10px 16px; border-radius:var(--radius); margin-bottom:12px; border-left:4px solid var(--gold); }
+    .cal-events { display:flex; flex-direction:column; gap:8px; }
+    .cal-event { display:flex; gap:14px; align-items:flex-start; padding:12px 16px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); }
+    .cal-event:hover { border-color:var(--navy); }
+    .cal-day { min-width:42px; text-align:center; font-weight:700; color:var(--navy); font-size:0.85rem; }
+    .cal-title { font-size:0.9rem; font-weight:600; color:var(--text); }
+    .cal-desc  { font-size:0.8rem; color:var(--gray-600); margin-top:2px; }
+  </style>
+</head>
+<body>
+<div class="top-bar"><div class="container"><span>📞 +91 92814 22053 &nbsp;|&nbsp; ✉ phd@mrvv.edu.in</span><span class="topbar-right"><span class="search-box top-search" id="siteSearch"><input type="text" id="siteSearchInput" placeholder="Search…" aria-label="Search site" autocomplete="off"><button type="button" aria-label="Search">🔍</button><div class="search-results" id="searchResults"></div></span><a href="notifications.html">Notifications</a> &nbsp;|&nbsp; <a href="calendar.html">Academic Calendar</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></span></div></div>
+<header class="site-header"><div class="container"><div class="header-inner">
+  <a href="index.html" class="site-logo"><div class="logo-icon">🎓</div><div class="logo-text"><div class="univ">Malla Reddy Vishwavidyapeeth</div><div class="dept">Centre for Doctoral Studies</div></div></a>
+  <button class="nav-toggle" aria-label="Toggle" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="main-nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About <span class="arrow">▾</span></a><ul class="dropdown-menu"><li><a href="about.html">About the Centre</a></li><li><a href="programs.html">Research Programs</a></li><li><a href="research-areas.html">Research Areas</a></li></ul></li>
+    <li><a href="admissions.html">Admissions <span class="arrow">▾</span></a><ul class="dropdown-menu"><li><a href="admissions.html">Admission Process</a></li><li><a href="eligibility.html">Eligibility Criteria</a></li><li><a href="regulations.html">Ph.D. Regulations</a></li></ul></li>
+    <li><a href="supervisors.html">People <span class="arrow">▾</span></a><ul class="dropdown-menu"><li><a href="supervisors.html">Research Supervisors</a></li><li><a href="co-supervisors.html">Co-Supervisors</a></li><li><a href="scholars.html">Research Scholars</a></li><li><a href="progress.html">Progress Tracker</a></li></ul></li>
+    <li><a href="coursework.html" class="active">Academics <span class="arrow">▾</span></a><ul class="dropdown-menu"><li><a href="coursework.html">Coursework & Methodology</a></li><li><a href="calendar.html">Academic Calendar</a></li><li><a href="events.html">Events & Workshops</a></li><li><a href="publications.html">Publications</a></li></ul></li>
+    <li><a href="forms.html">Resources <span class="arrow">▾</span></a><ul class="dropdown-menu"><li><a href="forms.html">Forms & Downloads</a></li><li><a href="funding.html">Research Funding</a></li><li><a href="forms.html#inflibnet">INFLIBNET Resources</a></li><li><a href="regulations.html">Ph.D. Regulations</a></li><li><a href="notifications.html">Notifications</a></li><li><a href="faq.html">FAQs</a></li></ul></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</div></div></header>
+
+<div class="page-hero"><div class="container"><div class="breadcrumb"><a href="index.html">Home</a> › <a href="coursework.html">Academics</a> › <span>Academic Calendar</span></div><h1>Academic Calendar 2026</h1><p style="color:rgba(255,255,255,0.75);margin-top:8px;">Calendar of events for the Ph.D. July 2026 Batch (3rd Call for Applications).</p></div></div>
+
+<section class="section"><div class="container">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:12px;">
+    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:0.82rem;">
+      <span><span style="display:inline-block;width:12px;height:12px;background:var(--navy);border-radius:2px;margin-right:6px;vertical-align:middle;"></span>Admissions</span>
+      <span><span style="display:inline-block;width:12px;height:12px;background:#1a7a40;border-radius:2px;margin-right:6px;vertical-align:middle;"></span>Coursework</span>
+      <span><span style="display:inline-block;width:12px;height:12px;background:var(--gold);border-radius:2px;margin-right:6px;vertical-align:middle;"></span>Reviews & Submissions</span>
+      <span><span style="display:inline-block;width:12px;height:12px;background:#8b1a1a;border-radius:2px;margin-right:6px;vertical-align:middle;"></span>Events</span>
+    </div>
+    <a href="docs/MRV-Academic-Calendar-2026.pdf" class="btn btn-navy" style="font-size:0.82rem;padding:8px 18px;" target="_blank" rel="noopener">⬇ Download Calendar PDF</a>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="cal-month">
+        <h3>March 2026</h3>
+        <div class="cal-events">
+          <div class="cal-event"><div class="cal-day" style="color:#1a2d5a;">05<br>Mar</div><div><div class="cal-title">Call for Ph.D. Applications</div><div class="cal-desc">July 2026 batch — 3rd Call for Applications</div></div><span class="badge badge-open" style="margin-left:auto;white-space:nowrap;">Admissions</span></div>
+        </div>
+      </div>
+      <div class="cal-month">
+        <h3>April 2026</h3>
+        <div class="cal-events">
+          <div class="cal-event"><div class="cal-day" style="color:#1a2d5a;">30<br>Apr</div><div><div class="cal-title">Last Date for Submission of Applications</div><div class="cal-desc">Online applications close for the July 2026 batch</div></div><span class="badge badge-soon" style="margin-left:auto;white-space:nowrap;">Admissions</span></div>
+        </div>
+      </div>
+      <div class="cal-month">
+        <h3>May 2026</h3>
+        <div class="cal-events">
+          <div class="cal-event"><div class="cal-day" style="color:#1a2d5a;">10<br>May</div><div><div class="cal-title">Ph.D. Entrance Examination</div><div class="cal-desc">Paper 1 (Research Methodology) + Paper 2 (Subject) — 70 marks, 1 hr</div></div><span class="badge badge-open" style="margin-left:auto;white-space:nowrap;">Admissions</span></div>
+          <div class="cal-event"><div class="cal-day" style="color:#1a2d5a;">17<br>May</div><div><div class="cal-title">Entrance Examination Results Announced</div><div class="cal-desc">Qualified candidates shortlisted for interview</div></div><span class="badge badge-open" style="margin-left:auto;white-space:nowrap;">Admissions</span></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="cal-month">
+        <h3>June 2026</h3>
+        <div class="cal-events">
+          <div class="cal-event"><div class="cal-day" style="color:#1a2d5a;">2nd wk<br>Jun</div><div><div class="cal-title">Final Ph.D. Admission Committee Interview</div><div class="cal-desc">Research proposal presentation &amp; interview*</div></div><span class="badge badge-open" style="margin-left:auto;white-space:nowrap;">Admissions</span></div>
+        </div>
+      </div>
+      <div class="cal-month">
+        <h3>July 2026</h3>
+        <div class="cal-events">
+          <div class="cal-event"><div class="cal-day" style="color:#1a2d5a;">2nd wk<br>Jul</div><div><div class="cal-title">Document Verification</div><div class="cal-desc">Verification of original certificates for selected candidates*</div></div><span class="badge badge-open" style="margin-left:auto;white-space:nowrap;">Admissions</span></div>
+          <div class="cal-event"><div class="cal-day" style="color:#1a2d5a;">25<br>Jul</div><div><div class="cal-title">Orientation Day</div><div class="cal-desc">Induction for the July 2026 Ph.D. scholars</div></div><span class="badge badge-open" style="margin-left:auto;white-space:nowrap;">Admissions</span></div>
+          <div class="cal-event"><div class="cal-day" style="color:#1a7a40;">5th wk<br>Jul</div><div><div class="cal-title">Coursework Commences</div><div class="cal-desc">Pre-Ph.D. coursework begins for the new batch*</div></div><span class="badge badge-open" style="background:#d4f5e0;color:#0a6630;margin-left:auto;white-space:nowrap;">Coursework</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:8px;">
+    <strong>Note:</strong> Dates are indicative and subject to change. Refer to <a href="notifications.html">official notifications</a> for confirmed dates. All scholars are responsible for monitoring the notice board and university portal for updates.
+  </div>
+</div></section>
+
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="site-logo" style="margin-bottom:12px;display:inline-flex;"><div class="logo-icon" style="width:40px;height:40px;font-size:1.1rem;">🎓</div><div class="logo-text"><div class="univ" style="color:rgba(255,255,255,0.5);">Malla Reddy Vishwavidyapeeth</div><div class="dept" style="font-size:0.9rem;">Centre for Doctoral Studies</div></div></a><p>Fostering research excellence and nurturing doctoral scholars.</p></div><div class="footer-section"><h4>Admissions</h4><ul><li><a href="https://mrvv.edu.in/#" target="_blank" rel="noopener">Apply Now</a></li><li><a href="eligibility.html">Eligibility</a></li><li><a href="regulations.html">Regulations</a></li></ul></div><div class="footer-section"><h4>Academics</h4><ul><li><a href="programs.html">Programs</a></li><li><a href="coursework.html">Coursework</a></li><li><a href="events.html">Events</a></li></ul></div><div class="footer-section"><h4>Resources</h4><ul><li><a href="forms.html">Forms</a></li><li><a href="faq.html">FAQs</a></li><li><a href="contact.html">Contact</a></li></ul></div></div><div class="footer-bottom"><span>© 2025 Centre for Doctoral Studies, Malla Reddy Vishwavidyapeeth.</span></div></div></footer>
+<script src="js/main.js?v=5"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events & Workshops | Centre for Doctoral Studies</title>
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <style>
+    .event-card { background:var(--white); border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; display:flex; gap:0; margin-bottom:20px; transition:box-shadow 0.2s; }
+    .event-card:hover { box-shadow:var(--shadow); }
+    .event-date-col { background:var(--navy); color:var(--white); min-width:90px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px 16px; text-align:center; flex-shrink:0; }
+    .event-day  { font-size:2.2rem; font-weight:800; line-height:1; }
+    .event-mon  { font-size:0.78rem; font-weight:600; text-transform:uppercase; letter-spacing:1px; opacity:0.8; }
+    .event-year { font-size:0.72rem; opacity:0.6; margin-top:2px; }
+    .event-body { padding:20px 24px; flex:1; }
+    .event-body h3 { font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:6px; }
+    .event-meta { display:flex; gap:16px; flex-wrap:wrap; font-size:0.82rem; color:var(--gray-600); margin-bottom:10px; }
+    .event-meta span { display:flex; align-items:center; gap:4px; }
+    .event-body p { font-size:0.88rem; color:var(--gray-600); }
+    .event-actions { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+    .past-tag { background:var(--gray-200); color:var(--gray-600); font-size:0.72rem; font-weight:700; padding:3px 10px; border-radius:12px; }
+    .upcoming-tag { background:#d4f5e0; color:#0a6630; font-size:0.72rem; font-weight:700; padding:3px 10px; border-radius:12px; }
+    @media(max-width:600px){ .event-card{flex-direction:column;} .event-date-col{flex-direction:row;gap:8px;padding:12px 16px;} }
+  </style>
+</head>
+<body>
+<div class="top-bar"><div class="container"><span>📞 +91 92814 22053 &nbsp;|&nbsp; ✉ phd@mrvv.edu.in</span><span class="topbar-right"><span class="search-box top-search" id="siteSearch"><input type="text" id="siteSearchInput" placeholder="Search…" aria-label="Search site" autocomplete="off"><button type="button" aria-label="Search">🔍</button><div class="search-results" id="searchResults"></div></span><a href="notifications.html">Notifications</a> &nbsp;|&nbsp; <a href="calendar.html">Academic Calendar</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></span></div></div>
+<header class="site-header"><div class="container"><div class="header-inner">
+  <a href="index.html" class="site-logo"><div class="logo-icon">🎓</div><div class="logo-text"><div class="univ">Malla Reddy Vishwavidyapeeth</div><div class="dept">Centre for Doctoral Studies</div></div></a>
+  <button class="nav-toggle" aria-label="Toggle" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="main-nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About <span class="arrow">▾</span></a><ul class="dropdown-menu"><li><a href="about.html">About the Centre</a></li><li><a href="programs.html">Research Programs</a></li><li><a href="research-areas.html">Research Areas</a></li></ul></li>
+    <li><a href="admissions.html">Admissions <span class="arrow">▾</span></a><ul class="dropdown-menu"><li><a href="admissions.html">Admission Process</a></li><li><a href="eligibility.html">Eligibility Criteria</a></li><li><a href="regulations.html">Ph.D. Regulations</a></li></ul></li>
+    <li><a href="supervisors.html">People <span class="arrow">▾</span></a><ul class="dropdown-menu"><li><a href="supervisors.html">Research Supervisors</a></li><li><a href="co-supervisors.html">Co-Supervisors</a></li><li><a href="scholars.html">Research Scholars</a></li><li><a href="progress.html">Progress Tracker</a></li></ul></li>
+    <li><a href="coursework.html" class="active">Academics <span class="arrow">▾</span></a><ul class="dropdown-menu"><li><a href="coursework.html">Coursework & Methodology</a></li><li><a href="calendar.html">Academic Calendar</a></li><li><a href="events.html">Events & Workshops</a></li><li><a href="publications.html">Publications</a></li></ul></li>
+    <li><a href="forms.html">Resources <span class="arrow">▾</span></a><ul class="dropdown-menu"><li><a href="forms.html">Forms & Downloads</a></li><li><a href="funding.html">Research Funding</a></li><li><a href="forms.html#inflibnet">INFLIBNET Resources</a></li><li><a href="regulations.html">Ph.D. Regulations</a></li><li><a href="notifications.html">Notifications</a></li><li><a href="faq.html">FAQs</a></li></ul></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</div></div></header>
+
+<div class="page-hero"><div class="container"><div class="breadcrumb"><a href="index.html">Home</a> › <a href="coursework.html">Academics</a> › <span>Events & Workshops</span></div><h1>Events & Workshops</h1><p style="color:rgba(255,255,255,0.75);margin-top:8px;">Seminars, conferences, workshops, and scholar development programs.</p></div></div>
+
+<section class="section"><div class="container">
+
+  <h2 class="text-navy fw-700" style="font-size:1.3rem;margin-bottom:20px;">Upcoming Events</h2>
+
+  <div class="event-card">
+    <div class="event-date-col" style="background:#1a5c2a;"><div class="event-day">20</div><div class="event-mon">Jul</div><div class="event-year">2025</div></div>
+    <div class="event-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><h3 style="margin:0;">Workshop on Research Methodology — Batch July 2025</h3><span class="upcoming-tag">Upcoming</span></div>
+      <div class="event-meta"><span>📍 Seminar Hall, Block A</span><span>🕘 9:00 AM – 5:00 PM</span><span>🎯 Mandatory for Year-1 Scholars</span></div>
+      <p>A full-day intensive workshop covering research design, data collection tools, statistical analysis, and academic writing. All newly enrolled scholars must attend. Guest lectures by external research experts.</p>
+      <div class="event-actions"><a href="#" class="btn btn-primary" style="padding:7px 16px;font-size:0.82rem;">Register Now</a><a href="#" class="btn btn-navy" style="padding:7px 16px;font-size:0.82rem;">Download Brochure</a></div>
+    </div>
+  </div>
+
+  <div class="event-card">
+    <div class="event-date-col" style="background:#2a0d5c;"><div class="event-day">10</div><div class="event-mon">Oct</div><div class="event-year">2025</div></div>
+    <div class="event-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><h3 style="margin:0;">Annual Research Day 2025</h3><span class="upcoming-tag">Upcoming</span></div>
+      <div class="event-meta"><span>📍 University Auditorium</span><span>🕘 9:00 AM – 6:00 PM</span><span>🎯 All Scholars & Faculty</span></div>
+      <p>A flagship annual event showcasing doctoral research across all six schools. Features poster presentations, oral presentations, keynote lectures, and the Best Research Scholar Award ceremony. Abstract submission opens September 12.</p>
+      <div class="event-actions"><a href="#" class="btn btn-primary" style="padding:7px 16px;font-size:0.82rem;">Submit Abstract</a><a href="#" class="btn btn-navy" style="padding:7px 16px;font-size:0.82rem;">View Last Year</a></div>
+    </div>
+  </div>
+
+  <div class="event-card">
+    <div class="event-date-col" style="background:#5c2a0d;"><div class="event-day">15</div><div class="event-mon">Nov</div><div class="event-year">2025</div></div>
+    <div class="event-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><h3 style="margin:0;">Workshop: Academic Writing & Publication Strategy</h3><span class="upcoming-tag">Upcoming</span></div>
+      <div class="event-meta"><span>📍 CDS Conference Room</span><span>🕘 10:00 AM – 4:00 PM</span><span>🎯 Year-2 & Year-3 Scholars</span></div>
+      <p>Focused workshop on writing journal articles, navigating the peer-review process, and selecting appropriate publication venues (UGC-CARE, Scopus, Web of Science). Limited seats — register early.</p>
+      <div class="event-actions"><a href="#" class="btn btn-primary" style="padding:7px 16px;font-size:0.82rem;">Register Now</a></div>
+    </div>
+  </div>
+
+  <div class="event-card">
+    <div class="event-date-col" style="background:#0d4a5c;"><div class="event-day">10</div><div class="event-mon">Feb</div><div class="event-year">2026</div></div>
+    <div class="event-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><h3 style="margin:0;">National Research Seminar 2026</h3><span class="upcoming-tag">Upcoming</span></div>
+      <div class="event-meta"><span>📍 University Convention Centre</span><span>🕘 2-Day Event</span><span>🎯 Open to All Researchers</span></div>
+      <p>Inter-university doctoral research seminar inviting scholars from partner institutions. Thematic tracks across engineering, sciences, social sciences, and health sciences. Call for papers to be announced in December 2025.</p>
+      <div class="event-actions"><a href="#" class="btn btn-navy" style="padding:7px 16px;font-size:0.82rem;">Get Notified</a></div>
+    </div>
+  </div>
+
+  <h2 class="text-navy fw-700" style="font-size:1.3rem;margin:40px 0 20px;">Past Events</h2>
+
+  <div class="event-card" style="opacity:0.8;">
+    <div class="event-date-col" style="background:var(--gray-600);"><div class="event-day">15</div><div class="event-mon">Mar</div><div class="event-year">2025</div></div>
+    <div class="event-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><h3 style="margin:0;">Workshop: SPSS & R for Research Scholars</h3><span class="past-tag">Completed</span></div>
+      <div class="event-meta"><span>📍 Computer Lab, Block C</span><span>👥 48 Participants</span></div>
+      <p>Hands-on training in statistical data analysis using SPSS and R. Covered descriptive statistics, hypothesis testing, regression, and data visualization.</p>
+      <div class="event-actions"><a href="#" style="font-size:0.82rem;color:var(--navy);font-weight:600;">View Report →</a><a href="#" style="font-size:0.82rem;color:var(--navy);font-weight:600;margin-left:14px;">Download Material</a></div>
+    </div>
+  </div>
+
+  <div class="event-card" style="opacity:0.8;">
+    <div class="event-date-col" style="background:var(--gray-600);"><div class="event-day">12</div><div class="event-mon">Oct</div><div class="event-year">2024</div></div>
+    <div class="event-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><h3 style="margin:0;">Annual Research Day 2024</h3><span class="past-tag">Completed</span></div>
+      <div class="event-meta"><span>📍 University Auditorium</span><span>👥 280 Participants</span><span>🏆 12 Awards Presented</span></div>
+      <p>Showcase of doctoral research with 45 oral presentations, 60 posters, and two keynote addresses by distinguished researchers from IIT Madras and AIIMS Delhi.</p>
+      <div class="event-actions"><a href="publications.html" style="font-size:0.82rem;color:var(--navy);font-weight:600;">View Proceedings →</a></div>
+    </div>
+  </div>
+
+</div></section>
+
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="site-logo" style="margin-bottom:12px;display:inline-flex;"><div class="logo-icon" style="width:40px;height:40px;font-size:1.1rem;">🎓</div><div class="logo-text"><div class="univ" style="color:rgba(255,255,255,0.5);">Malla Reddy Vishwavidyapeeth</div><div class="dept" style="font-size:0.9rem;">Centre for Doctoral Studies</div></div></a><p>Fostering research excellence and nurturing doctoral scholars.</p></div><div class="footer-section"><h4>Admissions</h4><ul><li><a href="https://mrvv.edu.in/#" target="_blank" rel="noopener">Apply Now</a></li><li><a href="eligibility.html">Eligibility</a></li><li><a href="regulations.html">Regulations</a></li></ul></div><div class="footer-section"><h4>Academics</h4><ul><li><a href="programs.html">Programs</a></li><li><a href="calendar.html">Calendar</a></li><li><a href="publications.html">Publications</a></li></ul></div><div class="footer-section"><h4>Resources</h4><ul><li><a href="forms.html">Forms</a></li><li><a href="faq.html">FAQs</a></li><li><a href="contact.html">Contact</a></li></ul></div></div><div class="footer-bottom"><span>© 2025 Centre for Doctoral Studies, Malla Reddy Vishwavidyapeeth.</span></div></div></footer>
+<script src="js/main.js?v=5"></script>
+</body>
+</html>

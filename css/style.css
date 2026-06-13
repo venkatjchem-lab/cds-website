@@ -265,7 +265,8 @@ ul { list-style: none; }
 .program-card {
   border-radius: 10px;
   padding: 26px;
-  color: var(--white);
+  color: var(--text);
+  border: 1px solid var(--gray-200);
   position: relative;
   overflow: hidden;
   min-height: 160px;
@@ -274,17 +275,17 @@ ul { list-style: none; }
 .program-card::before {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(160deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.3) 100%);
+  background: linear-gradient(160deg, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0.04) 100%);
 }
-.pc-eng  { background: linear-gradient(135deg, #1a3a6b, #0d2447); }
-.pc-sci  { background: linear-gradient(135deg, #1a5c2a, #0d3a18); }
-.pc-mgmt { background: linear-gradient(135deg, #5c2a0d, #3a1808); }
-.pc-phm  { background: linear-gradient(135deg, #2a0d5c, #180838); }
-.pc-ahs  { background: linear-gradient(135deg, #0d4a5c, #083038); }
-.pc-hss  { background: linear-gradient(135deg, #4a3a0d, #302608); }
+.pc-eng  { background: linear-gradient(135deg, #eaf1fb, #d6e3f6); }
+.pc-sci  { background: linear-gradient(135deg, #e7f5ec, #d2ecda); }
+.pc-mgmt { background: linear-gradient(135deg, #fbeee3, #f4ddc9); }
+.pc-phm  { background: linear-gradient(135deg, #f1eafa, #e1d4f2); }
+.pc-ahs  { background: linear-gradient(135deg, #e6f4f6, #d0eaee); }
+.pc-hss  { background: linear-gradient(135deg, #f6f2e2, #ece4cb); }
 .program-card .icon { font-size: 2rem; margin-bottom: 12px; position: relative; }
-.program-card h3 { font-size: 1rem; font-weight: 700; position: relative; }
-.program-card p  { font-size: 0.82rem; opacity: 0.8; margin-top: 4px; position: relative; }
+.program-card h3 { font-size: 1rem; font-weight: 700; position: relative; color: var(--navy); }
+.program-card p  { font-size: 0.82rem; color: var(--gray-600); margin-top: 4px; position: relative; }
 
 /* ── Notice board ── */
 .notice-list li {

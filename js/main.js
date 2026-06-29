@@ -167,3 +167,13 @@ if (statsBar) {
   }, { threshold: 0.3 });
   observer.observe(statsBar);
 }
+
+// Portal login link — added to the footer on every page
+(function () {
+  const fb = document.querySelector('.footer-bottom');
+  if (fb && !fb.querySelector('[data-portal-login]')) {
+    const span = document.createElement('span');
+    span.innerHTML = '<a data-portal-login href="login.html" style="font-weight:600;">🔒 Scholar &amp; Faculty Login</a>';
+    fb.appendChild(span);
+  }
+})();

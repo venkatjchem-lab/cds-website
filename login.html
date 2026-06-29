@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Login | Centre for Doctoral Studies</title>
+  <link rel="stylesheet" href="css/portal.css?v=1">
+  <style>
+    .login-wrap { min-height: calc(100vh - 69px); display: flex; align-items: center; justify-content: center;
+      background: var(--grad-soft); padding: 40px 20px; position: relative; overflow: hidden; }
+    .login-wrap::after { content: ''; position: absolute; top: -140px; right: -100px; width: 460px; height: 460px;
+      background: radial-gradient(circle, rgba(139,92,246,0.22) 0%, rgba(217,70,239,0.08) 50%, transparent 70%); }
+    .login-card { width: 100%; max-width: 420px; background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 34px 32px; position: relative; z-index: 1; }
+    .login-card h1 { font-size: 1.35rem; color: var(--navy-dark); margin-bottom: 4px; }
+    .login-card .lead { color: var(--muted); font-size: 0.9rem; margin-bottom: 24px; }
+    .login-logo { width: 52px; height: 52px; border-radius: 50%; background: var(--grad); color: #fff;
+      display: flex; align-items: center; justify-content: center; font-weight: 800; margin-bottom: 16px;
+      box-shadow: 0 5px 16px rgba(124,58,237,0.32); }
+    .login-card .btn-primary { width: 100%; justify-content: center; margin-top: 6px; }
+    .demo-note { margin-top: 18px; font-size: 0.78rem; color: var(--muted); background: rgba(124,58,237,0.06);
+      border-radius: var(--radius-sm); padding: 10px 13px; line-height: 1.5; }
+    .back-link { display: inline-block; margin-top: 16px; font-size: 0.84rem; }
+  </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+</head>
+<body>
+  <header class="appbar">
+    <div class="container appbar-inner">
+      <a class="brand" href="index.html" style="text-decoration:none">
+        <div class="brand-icon">CDS</div>
+        <div class="brand-text">
+          <div class="t1">Malla Reddy Vishwavidyapeeth</div>
+          <div class="t2">Research Portal</div>
+        </div>
+      </a>
+      <div class="appbar-spacer"></div>
+      <a href="index.html" class="btn btn-ghost btn-sm">← Back to website</a>
+    </div>
+  </header>
+
+  <div class="login-wrap">
+    <form class="login-card" id="login-form">
+      <div class="login-logo">CDS</div>
+      <h1>Sign in</h1>
+      <p class="lead">Access your research progress dashboard.</p>
+
+      <div class="field">
+        <label for="role">I am signing in as</label>
+        <select id="role" name="role" autocomplete="off">
+          <option value="scholar">Research Scholar</option>
+          <option value="supervisor">Supervisor / Guide</option>
+          <option value="cds" selected>CDS Office</option>
+          <option value="dean">Dean</option>
+          <option value="director">Director of Research</option>
+          <option value="registrar">Registrar (view only)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="email">Email or scholar ID</label>
+        <input type="text" id="email" name="email" placeholder="name@mrvv.edu.in" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary">Sign in</button>
+
+      <div class="demo-note">
+        <strong>Prototype:</strong> this is a front-end demo with no real authentication —
+        enter anything, or just pick a role and sign in. You can switch roles inside the portal.
+      </div>
+      <a href="index.html" class="back-link">Return to the main website</a>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var role = document.getElementById('role').value;
+      var who = document.getElementById('email').value || '';
+      try {
+        sessionStorage.setItem('cdsRole', role);
+        sessionStorage.setItem('cdsUser', who);
+      } catch (err) {}
+      window.location.href = 'portal.html';
+    });
+  </script>
+</body>
+</html>

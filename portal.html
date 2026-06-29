@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Research Portal | Centre for Doctoral Studies</title>
+  <link rel="stylesheet" href="css/portal.css?v=1">
+  <script>
+    // Prototype access gate — redirect to login if no session role.
+    if (!(window.sessionStorage && sessionStorage.getItem('cdsRole'))) {
+      location.replace('login.html');
+    }
+  </script>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+</head>
+<body>
+  <header class="appbar">
+    <div class="container appbar-inner">
+      <a class="brand" href="index.html" style="text-decoration:none">
+        <div class="brand-icon">CDS</div>
+        <div class="brand-text">
+          <div class="t1">Malla Reddy Vishwavidyapeeth</div>
+          <div class="t2">Research Portal</div>
+        </div>
+      </a>
+      <div class="appbar-spacer"></div>
+      <div class="role-pick">
+        <label for="role-pick">View as</label>
+        <select id="role-pick" autocomplete="off"></select>
+      </div>
+      <div id="user-chip"></div>
+      <a href="#" id="signout" class="btn btn-ghost btn-sm" style="margin-left:6px">Sign out</a>
+    </div>
+  </header>
+
+  <div id="page-head" class="page-head"></div>
+
+  <main>
+    <div id="view"></div>
+  </main>
+
+  <script src="data/scholars.js?v=2"></script>
+  <script src="js/portal-model.js?v=2"></script>
+  <script src="js/portal-app.js?v=2"></script>
+</body>
+</html>

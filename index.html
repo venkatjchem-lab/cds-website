@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Centre for Doctoral Studies</title>
   <meta name="description" content="Official website of the Centre for Doctoral Studies — advancing research excellence across Engineering, Sciences, Management, Pharmacy, Allied Health Sciences, and Humanities.">
-  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="stylesheet" href="css/style.css?v=12">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 </head>
 <body>
 
@@ -27,7 +30,7 @@
   <div class="container">
     <div class="header-inner">
       <a href="index.html" class="site-logo">
-        <div class="logo-icon">🎓</div>
+        <div class="logo-icon"><img src="images/logo.png" alt="Malla Reddy Vishwavidyapeeth"></div>
         <div class="logo-text">
           <div class="univ">Malla Reddy Vishwavidyapeeth</div>
           <div class="dept">Centre for Doctoral Studies</div>
@@ -93,47 +96,7 @@
 
 <!-- Hero -->
 <section class="hero">
-  <svg class="hero-art" viewBox="0 0 560 520" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <g stroke="#1a2d5a" stroke-width="2" opacity="0.36">
-      <!-- atom -->
-      <g transform="translate(415,118)">
-        <ellipse rx="52" ry="20"/>
-        <ellipse rx="52" ry="20" transform="rotate(60)"/>
-        <ellipse rx="52" ry="20" transform="rotate(120)"/>
-      </g>
-      <!-- benzene-style molecule ring -->
-      <path d="M468,300 L445,340 L399,340 L376,300 L399,260 L445,260 Z"/>
-      <path d="M441,267 L403,267"/>
-      <path d="M468,300 L512,300"/>
-      <path d="M376,300 L333,300"/>
-      <!-- DNA double helix -->
-      <path d="M100,70 C156,110 44,150 100,190 C156,230 44,270 100,310 C156,350 44,390 100,430"/>
-      <path d="M100,70 C44,110 156,150 100,190 C44,230 156,270 100,310 C44,350 156,390 100,430"/>
-      <path d="M72,112 L128,112 M128,154 L72,154 M72,228 L128,228 M128,270 L72,270 M72,344 L128,344 M128,386 L72,386"/>
-      <!-- node graph -->
-      <path d="M360,432 L432,406 L474,462 L406,498 L360,432 M432,406 L506,442 L474,462"/>
-    </g>
-    <g fill="#c8962c">
-      <circle cx="460" cy="128" r="4.5"/>
-      <circle cx="378" cy="104" r="4.5"/>
-      <circle cx="415" cy="98" r="4.5"/>
-      <circle cx="468" cy="300" r="4"/>
-      <circle cx="399" cy="260" r="4"/>
-      <circle cx="445" cy="340" r="4"/>
-      <circle cx="512" cy="300" r="4"/>
-      <circle cx="72" cy="112" r="4"/>
-      <circle cx="128" cy="270" r="4"/>
-      <circle cx="72" cy="344" r="4"/>
-      <circle cx="432" cy="406" r="5"/>
-      <circle cx="406" cy="498" r="5"/>
-      <circle cx="506" cy="442" r="5"/>
-    </g>
-    <g fill="#1a2d5a" opacity="0.45">
-      <circle cx="360" cy="432" r="4"/>
-      <circle cx="474" cy="462" r="4"/>
-    </g>
-  </svg>
-  <div class="container">
+  <div class="container hero-grid">
     <div class="hero-content">
       <div class="hero-badge">Research · Innovation · Excellence</div>
       <h1>Shaping Tomorrow's<br><span>Researchers & Innovators</span></h1>
@@ -143,6 +106,9 @@
         <a href="about.html" class="btn btn-outline">Explore Programs</a>
       </div>
     </div>
+    <figure class="hero-photo">
+      <img src="images/hero-india.jpg" alt="Research scholar pipetting samples in a medical research laboratory" width="800" height="600">
+    </figure>
   </div>
 </section>
 
@@ -184,45 +150,69 @@
       <div class="divider"></div>
     </div>
     <div class="programs-grid" style="grid-template-columns:repeat(4,1fr);">
-      <a href="programs.html#engineering" class="program-card pc-eng" style="text-decoration:none">
-        <div class="icon">⚙️</div>
-        <h3>Engineering</h3>
-        <p>CSE, ECE, EEE, Civil, Mechanical & more — 12 supervisors, 35 scholars</p>
+      <a href="programs.html#engineering" class="program-card pc-eng has-img" style="text-decoration:none">
+        <img class="pc-img" src="images/fac-eng.jpg" alt="" loading="lazy" width="600" height="400">
+        <div class="pc-body">
+          <div class="icon">⚙️</div>
+          <h3>Engineering</h3>
+          <p>CSE, ECE, EEE, Civil, Mechanical & more — 12 supervisors, 35 scholars</p>
+        </div>
       </a>
-      <a href="programs.html#pharma" class="program-card pc-phm" style="text-decoration:none">
-        <div class="icon">💊</div>
-        <h3>Pharmaceutical Sciences</h3>
-        <p>Pharmaceutics, Pharmacology, Pharm. Analysis, Pharmacognosy — 14 supervisors, 88 scholars</p>
+      <a href="programs.html#pharma" class="program-card pc-phm has-img" style="text-decoration:none">
+        <img class="pc-img" src="images/fac-phm.jpg" alt="" loading="lazy" width="600" height="400">
+        <div class="pc-body">
+          <div class="icon">💊</div>
+          <h3>Pharmaceutical Sciences</h3>
+          <p>Pharmaceutics, Pharmacology, Pharm. Analysis, Pharmacognosy — 14 supervisors, 88 scholars</p>
+        </div>
       </a>
-      <a href="programs.html#medicine" class="program-card pc-sci" style="text-decoration:none">
-        <div class="icon">🩺</div>
-        <h3>Medicine</h3>
-        <p>Biochemistry, Microbiology, Clinical Sciences — 17 supervisors, 25 scholars</p>
+      <a href="programs.html#medicine" class="program-card pc-sci has-img" style="text-decoration:none">
+        <img class="pc-img" src="images/fac-med.jpg" alt="" loading="lazy" width="600" height="400">
+        <div class="pc-body">
+          <div class="icon">🩺</div>
+          <h3>Medicine</h3>
+          <p>Biochemistry, Microbiology, Clinical Sciences — 17 supervisors, 25 scholars</p>
+        </div>
       </a>
-      <a href="programs.html#ahs" class="program-card pc-ahs" style="text-decoration:none">
-        <div class="icon">🏥</div>
-        <h3>Allied & Health Sciences</h3>
-        <p>Nursing, Physiotherapy, Radiology, Molecular Medicine — 13 supervisors, 24 scholars</p>
+      <a href="programs.html#ahs" class="program-card pc-ahs has-img" style="text-decoration:none">
+        <img class="pc-img" src="images/fac-ahs.jpg" alt="" loading="lazy" width="600" height="400">
+        <div class="pc-body">
+          <div class="icon">🏥</div>
+          <h3>Allied & Health Sciences</h3>
+          <p>Nursing, Physiotherapy, Radiology, Molecular Medicine — 13 supervisors, 24 scholars</p>
+        </div>
       </a>
-      <a href="programs.html#dentistry" class="program-card pc-hss" style="text-decoration:none">
-        <div class="icon">🦷</div>
-        <h3>Dentistry</h3>
-        <p>Oral Pathology, Maxillofacial Surgery & Allied Dental Sciences — 4 supervisors, 18 scholars</p>
+      <a href="programs.html#dentistry" class="program-card pc-hss has-img" style="text-decoration:none">
+        <img class="pc-img" src="images/fac-dent.jpg" alt="" loading="lazy" width="600" height="400">
+        <div class="pc-body">
+          <div class="icon">🦷</div>
+          <h3>Dentistry</h3>
+          <p>Oral Pathology, Maxillofacial Surgery & Allied Dental Sciences — 4 supervisors, 18 scholars</p>
+        </div>
       </a>
-      <a href="programs.html#publichealth" class="program-card pc-mgmt" style="text-decoration:none">
-        <div class="icon">🌿</div>
-        <h3>Public Health</h3>
-        <p>Epidemiology, Nutrition, Telemedicine, Bacteriophage Research — 1 supervisor, 3 scholars</p>
+      <a href="programs.html#publichealth" class="program-card pc-mgmt has-img" style="text-decoration:none">
+        <img class="pc-img" src="images/fac-pub.jpg" alt="" loading="lazy" width="600" height="400">
+        <div class="pc-body">
+          <div class="icon">🌿</div>
+          <h3>Public Health</h3>
+          <p>Epidemiology, Nutrition, Telemedicine, Bacteriophage Research — 1 supervisor, 3 scholars</p>
+        </div>
       </a>
-      <a href="programs.html#digitalhealth" class="program-card pc-eng" style="text-decoration:none">
-        <div class="icon">💻</div>
-        <h3>Digital Health</h3>
-        <p>Digital Twins, Health Records, AI in Healthcare, Smart Elderly Care — 1 supervisor, 4 scholars</p>
+      <a href="programs.html#digitalhealth" class="program-card pc-eng has-img" style="text-decoration:none">
+        <img class="pc-img" src="images/fac-dig.jpg" alt="" loading="lazy" width="600" height="400">
+        <div class="pc-body">
+          <div class="icon">💻</div>
+          <h3>Digital Health</h3>
+          <p>Digital Twins, Health Records, AI in Healthcare, Smart Elderly Care — 1 supervisor, 4 scholars</p>
+        </div>
       </a>
-      <a href="programs.html#management" class="program-card pc-mgmt" style="text-decoration:none">
-        <div class="icon">📊</div>
-        <h3>Management</h3>
-        <p>Strategy, Finance, HR, Marketing & Branding — 3 supervisors, 6 scholars</p>
+      <a href="programs.html#management" class="program-card pc-mgmt has-img" style="text-decoration:none">
+        <img class="pc-img" src="images/fac-mgmt.jpg" alt="" loading="lazy" width="600" height="400">
+        <div class="pc-body">
+          <div class="icon">📊</div>
+          <h3>Management</h3>
+          <p>Strategy, Finance, HR, Marketing & Branding — 3 supervisors, 6 scholars</p>
+        </div>
       </a>
     </div>
   </div>
@@ -385,13 +375,39 @@
   </div>
 </section>
 
+<!-- Research in action -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">On Campus</div>
+      <h2 class="section-title">Research in Action</h2>
+      <p class="section-sub">From laboratory bench to publication — scholars at the Centre advance discovery across the health sciences, technology, and beyond.</p>
+      <div class="divider"></div>
+    </div>
+    <div class="gallery-grid">
+      <figure class="gallery-item">
+        <img src="images/med-1.jpg" alt="Researcher analysing a sample in a medical laboratory" loading="lazy" width="800" height="600">
+        <figcaption>Clinical &amp; translational research</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <img src="images/med-2.jpg" alt="Medical diagnostic imaging equipment" loading="lazy" width="800" height="600">
+        <figcaption>Medical diagnostics &amp; instrumentation</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <img src="images/med-3.jpg" alt="Team of doctors in a diagnostic discussion" loading="lazy" width="800" height="600">
+        <figcaption>Interdisciplinary medical teams</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <!-- Footer -->
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="site-logo" style="margin-bottom:12px; display:inline-flex;">
-          <div class="logo-icon" style="width:40px;height:40px;font-size:1.1rem;">🎓</div>
+          <div class="logo-icon" style="height:40px;"><img src="images/logo.png" alt="Malla Reddy Vishwavidyapeeth"></div>
           <div class="logo-text">
             <div class="univ" style="color:var(--gray-600);">Malla Reddy Vishwavidyapeeth</div>
             <div class="dept" style="font-size:0.9rem;">Centre for Doctoral Studies</div>
@@ -436,6 +452,6 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=5"></script>
+<script src="js/main.js?v=6"></script>
 </body>
 </html>

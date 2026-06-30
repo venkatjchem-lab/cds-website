@@ -15,6 +15,13 @@ const facClass = f => FAC_CLASS[f] || 'f-sci';
 const initials = n => n.replace(/Dr\.?\s*/i, '').trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
+/* "July 2025" -> "Jul 2025", "January 2026" -> "Jan 2026" */
+const batchShort = b => String(b).replace(/^([A-Za-z]+)/, m => m.slice(0, 3));
+
+/* ---- coursework status helpers (Passed/Failed/Absent/Pending + legacy Completed) ---- */
+const CW_DONE = st => st === 'Passed' || st === 'Completed';
+const cwBadge = st => CW_DONE(st) ? 'b-ok' : st === 'Failed' ? 'b-risk' : st === 'Absent' ? 'b-warn' : 'b-info';
+
 const ROLES = {
   scholar:   { name: 'Scholar', kind: 'scholar' },
   supervisor:{ name: 'Supervisor', kind: 'supervisor' },
@@ -42,8 +49,19 @@ const state = {
   scholarId: HAS_DATA ? pickRichScholar().id : null,
   supervisor: HAS_DATA ? pickBusySupervisor() : null,
   deanFaculty: HAS_DATA ? M.faculties[0].name : null,
+  batchFilter: 'all',
+  scholarYear: 'all',
+  scholarFaculty: 'all',
   tab: 'overview'
 };
+
+/* scholars matching the dashboard's Year + Faculty filters */
+function scholarPool() {
+  let list = M.scholars;
+  if (state.scholarYear !== 'all') list = list.filter(s => s.batch === state.scholarYear);
+  if (state.scholarFaculty !== 'all') list = list.filter(s => s.faculty === state.scholarFaculty);
+  return list;
+}
 
 function pickRichScholar() {
   return M.scholars.slice().sort((a, b) =>
@@ -79,6 +97,15 @@ function minibar(pct) {
   return `<span class="minibar"><span class="track"><span style="width:${pct}%"></span></span><span class="pct">${pct}%</span></span>`;
 }
 function av(s) { return `<span class="av-fac ${facClass(s.faculty)}">${initials(s.name)}</span>`; }
+/* compact coursework pass/fail summary for a scholar (admin tables) */
+function cwResult(s) {
+  const cw = window.scholarCoursework(s);
+  const passed = cw.filter(c => CW_DONE(c.status)).length;
+  const fails = cw.filter(c => c.status === 'Failed' || c.status === 'Absent').map(c => c.code || c.name);
+  const cls = passed === cw.length ? 'b-ok' : fails.length ? 'b-risk' : 'b-info';
+  return `<span class="badge ${cls}">${passed}/${cw.length}</span>` +
+    (fails.length ? ` <span class="sm muted">✗ ${fails.map(esc).join(', ')}</span>` : '');
+}
 
 /* ============================================================ render router */
 function render() {
@@ -112,23 +139,43 @@ const scholar = () => M.scholars.find(s => s.id === state.scholarId);
 /* ============================================================ SCHOLAR */
 function scholarHead() {
   const s = scholar();
+  const years = allBatches();
+  let facPool = M.scholars;
+  if (state.scholarYear !== 'all') facPool = facPool.filter(x => x.batch === state.scholarYear);
+  const faculties = [...new Set(facPool.map(x => x.faculty))].sort();
+  const pool = scholarPool();
+  const opt = (val, label, sel) => `<option value="${esc(val)}"${sel ? ' selected' : ''}>${esc(label)}</option>`;
   return `<div class="container">
     <h1>Scholar dashboard</h1>
-    <p>${esc(s.name)} · ${esc(s.dept)} · ${esc(s.mode)} · enrolled ${s.enrolledYear}</p>
-    <div class="persona-pick" style="margin-top:12px;position:relative">
-      <select id="scholar-pick" autocomplete="off">${M.scholars.map(x =>
-        `<option value="${x.id}" ${x.id === s.id ? 'selected' : ''}>${esc(x.name)} — ${esc(x.faculty)}</option>`).join('')}</select>
+    <p>${esc(s.name)}${s.enroll ? ' · <strong>' + esc(s.enroll) + '</strong>' : ''} · ${esc(s.dept)} · ${esc(s.mode)} · enrolled ${s.enrolledYear}${s.batch ? ' · <strong style="color:var(--violet)">' + esc(s.batch) + ' batch</strong>' : ''}</p>
+    <div class="scholar-search" style="margin-top:12px;position:relative;max-width:440px">
+      <input type="text" id="scholar-search" autocomplete="off" placeholder="🔍  Search scholar by name, faculty or batch…">
+      <div id="scholar-results" class="ss-results"></div>
+    </div>
+    <div class="scholar-filters">
+      <label class="sf"><span>Year</span>
+        <select id="scholar-year" autocomplete="off">${opt('all', 'All years', state.scholarYear === 'all')}${years.map(y => opt(y, batchShort(y), state.scholarYear === y)).join('')}</select></label>
+      <label class="sf"><span>Faculty</span>
+        <select id="scholar-faculty" autocomplete="off">${opt('all', 'All faculties', state.scholarFaculty === 'all')}${faculties.map(f => opt(f, f, state.scholarFaculty === f)).join('')}</select></label>
+      <label class="sf"><span>Scholar</span>
+        <select id="scholar-pick" autocomplete="off">${pool.map(x =>
+          opt(x.id, x.name + ' — ' + x.faculty, x.id === s.id)).join('')}</select></label>
     </div></div>`;
 }
 function scholarView() {
   const s = scholar();
+  const d = window.scholarDetail(s);
+  const rdcDone = d.milestones.filter(m => m.status === 'done').length;
+  const rdcCur = d.milestones.find(m => m.status === 'current');
+  const cwDone = d.coursework.filter(c => CW_DONE(c.status)).length;
   const tabs = ['overview', 'submit', 'publications', 'coursework', 'attendance', 'meetings'];
   const labels = { overview: 'Overview', submit: 'Submit progress', publications: 'Publications', coursework: 'Coursework', attendance: 'Attendance', meetings: 'Meeting log' };
   return `<div class="container">
     <div class="kpi-grid" style="margin-bottom:24px">
       ${kpi('Overall progress', s.progressPct + '%', s.stageName)}
-      ${kpi('Current milestone', s.stage + 1 + '/8', s.stageName)}
+      ${kpi('RDC reviews', rdcDone + '/8', rdcCur ? rdcCur.name.split(' — ')[0] + ' due next' : (rdcDone === 8 ? 'all complete' : 'in progress'))}
       ${kpi('Publications', s.publications, s.publications ? 'recorded' : 'none yet')}
+      ${kpi('Coursework', cwDone + '/' + d.coursework.length, 'courses passed', cwDone === d.coursework.length ? 'ok' : '')}
       ${kpi('Last update', s.daysSinceUpdate + 'd', 'ago', s.noUpdate ? 'danger' : 'ok')}
     </div>
     <div class="tabs">${tabs.map(t => `<button class="tab ${state.tab === t ? 'active' : ''}" data-tab="${t}">${labels[t]}</button>`).join('')}</div>
@@ -144,9 +191,14 @@ function scholarTab(s) {
   if (state.tab === 'meetings') return meetTab(d);
   // overview
   const subs = store.submissions[s.id] || [];
-  return `<div class="grid-3">
+  return `${s.topic ? `<div class="card card-pad" style="margin-bottom:18px">
+    <div class="block-title">PhD research title <span class="pill">${esc(s.dept)}</span></div>
+    <p class="research-title">${esc(s.topic)}</p>
+    <div class="sm muted">Supervisor: ${esc(s.supervisor)}</div>
+  </div>` : ''}
+  <div class="grid-3">
     <div class="card card-pad">
-      <div class="block-title">RDC milestones <span class="pill">${s.stage + 1} of 8</span></div>
+      <div class="block-title">RDC milestones <span class="pill">${d.milestones.filter(m => m.status === 'done').length} of 8 completed</span></div>
       <div class="steps">${d.milestones.map((m, i) => `
         <div class="mstep"><span class="mdot ${m.status}">${m.status === 'done' ? '✓' : i + 1}</span>
           <div class="grow"><div class="mname">${esc(m.name)}</div><div class="mdate">${esc(m.date)}</div></div>
@@ -202,13 +254,15 @@ function pubTab(s, d) {
 }
 function cwTab(d) {
   const items = d.coursework;
-  const done = items.filter(c => c.status === 'Completed').length;
+  const done = items.filter(c => CW_DONE(c.status)).length;
+  const hasCode = items.some(c => c.code);
   const hasCredits = items.some(c => c.credits != null);
-  const creditStr = hasCredits ? ' · ' + items.filter(c => c.status === 'Completed').reduce((a, c) => a + (c.credits || 0), 0) + ' credits' : '';
-  return `<div class="card card-pad"><div class="block-title">Pre-Ph.D. coursework <span class="pill">${done}/${items.length} done${creditStr}</span></div>
-    <table><thead><tr><th>Course</th>${hasCredits ? '<th>Credits</th><th>Grade</th>' : ''}<th>Status</th></tr></thead><tbody>
-      ${items.map(c => `<tr><td class="nm">${esc(c.name)}</td>${hasCredits ? `<td>${c.credits == null ? '—' : c.credits}</td><td>${esc(c.grade || '—')}</td>` : ''}
-        <td><span class="badge ${c.status === 'Completed' ? 'b-ok' : 'b-info'}">${esc(c.status)}</span></td></tr>`).join('')}
+  const hasGrade = items.some(c => c.grade);
+  const creditStr = hasCredits ? ' · ' + items.filter(c => CW_DONE(c.status)).reduce((a, c) => a + (c.credits || 0), 0) + ' credits earned' : '';
+  return `<div class="card card-pad"><div class="block-title">Pre-Ph.D. coursework <span class="pill">${done}/${items.length} passed${creditStr}</span></div>
+    <table><thead><tr>${hasCode ? '<th>Code</th>' : ''}<th>Course</th>${hasCredits ? '<th>Credits</th>' : ''}${hasGrade ? '<th>Grade</th>' : ''}<th>Status</th></tr></thead><tbody>
+      ${items.map(c => `<tr>${hasCode ? `<td><span class="badge b-violet">${esc(c.code || '—')}</span></td>` : ''}<td class="nm">${esc(c.name)}</td>${hasCredits ? `<td>${c.credits == null ? '—' : c.credits}</td>` : ''}${hasGrade ? `<td>${esc(c.grade || '—')}</td>` : ''}
+        <td><span class="badge ${cwBadge(c.status)}">${esc(c.status)}</span></td></tr>`).join('')}
     </tbody></table></div>`;
 }
 function attTab(s, d) {
@@ -232,6 +286,36 @@ function meetTab(d) {
 function wireScholar() {
   const sp = document.getElementById('scholar-pick');
   if (sp) sp.onchange = e => { state.scholarId = e.target.value; state.tab = 'overview'; render(); };
+  // keep selected scholar inside the current Year + Faculty filter; jump to first if not
+  const syncScholarToPool = () => {
+    const pool = scholarPool();
+    if (!pool.some(x => x.id === state.scholarId)) state.scholarId = (pool[0] || M.scholars[0]).id;
+    state.tab = 'overview'; render();
+  };
+  const yr = document.getElementById('scholar-year');
+  if (yr) yr.onchange = e => { state.scholarYear = e.target.value; state.scholarFaculty = 'all'; syncScholarToPool(); };
+  const fac = document.getElementById('scholar-faculty');
+  if (fac) fac.onchange = e => { state.scholarFaculty = e.target.value; syncScholarToPool(); };
+  const si = document.getElementById('scholar-search');
+  const sr = document.getElementById('scholar-results');
+  if (si && sr) {
+    const renderResults = q => {
+      q = q.trim().toLowerCase();
+      let list = M.scholars;
+      if (q) list = list.filter(x => (x.name + ' ' + x.faculty + ' ' + x.dept + ' ' + (x.batch || '')).toLowerCase().includes(q));
+      sr.innerHTML = list.length
+        ? list.slice(0, 50).map(x => `<div class="ss-item${x.id === state.scholarId ? ' active' : ''}" data-id="${x.id}"><div class="nm">${esc(x.name)}</div><div class="meta">${esc(x.faculty)}${x.batch ? ' · ' + esc(x.batch) : ''}</div></div>`).join('')
+        : '<div class="ss-empty">No scholars match.</div>';
+      sr.classList.add('open');
+    };
+    si.onfocus = () => renderResults(si.value);
+    si.oninput = () => renderResults(si.value);
+    sr.onmousedown = e => { const it = e.target.closest('.ss-item'); if (!it) return; e.preventDefault(); state.scholarId = it.dataset.id; state.scholarYear = 'all'; state.scholarFaculty = 'all'; state.tab = 'overview'; render(); };
+  }
+  if (!window.__ssOutsideWired) {
+    window.__ssOutsideWired = true;
+    document.addEventListener('click', e => { if (!e.target.closest('.scholar-search')) { const r = document.getElementById('scholar-results'); if (r) r.classList.remove('open'); } });
+  }
   document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { state.tab = b.dataset.tab; render(); });
   const f = document.getElementById('progress-form');
   if (f) f.onsubmit = e => {
@@ -333,23 +417,92 @@ function wireSupervisor() {
 /* ============================================================ CDS / DEAN / DIRECTOR / REGISTRAR */
 function cdsScholars() {
   const r = ROLES[state.role];
-  return r.scopeFaculty ? M.scholars.filter(s => s.faculty === state.deanFaculty) : M.scholars;
+  let list = r.scopeFaculty ? M.scholars.filter(s => s.faculty === state.deanFaculty) : M.scholars;
+  if (state.batchFilter && state.batchFilter !== 'all') list = list.filter(s => s.batch === state.batchFilter);
+  return list;
+}
+function allBatches() { return [...new Set(M.scholars.map(s => s.batch).filter(Boolean))].sort(); }
+
+/* ---- CSV export ---- */
+function csvCell(v) { v = v == null ? '' : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+function downloadCSV(filename, headers, rows) {
+  const csv = [headers, ...rows].map(r => r.map(csvCell).join(',')).join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' }));
+  a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+}
+function batchTag() { return state.batchFilter && state.batchFilter !== 'all' ? '-' + state.batchFilter.replace(/\s+/g, '') : ''; }
+function statusLabel(s) { return s.completed ? 'Awarded' : s.atRisk ? 'At risk' : 'On track'; }
+
+function exportRoster() {
+  const sc = cdsScholars();
+  const headers = ['Enrolment No', 'Name', 'Faculty', 'Department', 'Mode', 'Batch', 'Supervisor', 'Thesis Title', 'RPE', 'RMB', 'TFCS', 'LRRP', 'Coursework done', 'Status'];
+  const rows = sc.map(s => {
+    const cw = window.scholarCoursework(s); const by = {}; cw.forEach(c => by[c.code] = c.status);
+    const done = cw.filter(c => CW_DONE(c.status)).length;
+    return [s.enroll || '', s.name, s.faculty, s.dept, s.mode, s.batch || '', s.supervisor, s.topic || '',
+      by.RPE || '', by.RMB || '', by.TFCS || '', by.LRRP || '', done + '/' + cw.length, statusLabel(s)];
+  });
+  downloadCSV('cds-roster' + batchTag() + '.csv', headers, rows);
+}
+function exportAtRisk() {
+  const sc = cdsScholars();
+  const rows = sc.filter(s => s.atRisk).map(s => [s.enroll || '', s.name, s.faculty, s.dept, s.supervisor, s.batch || '', s.progressPct + '%', s.delayed ? 'Delayed milestone' : (s.noUpdate ? 'No update' : 'Slow progress')]);
+  downloadCSV('cds-at-risk' + batchTag() + '.csv', ['Enrolment No', 'Name', 'Faculty', 'Department', 'Supervisor', 'Batch', 'Progress', 'Reason'], rows);
+}
+function exportSupervisors() {
+  const sc = cdsScholars(); const map = {};
+  sc.forEach(s => { const g = map[s.supervisor] || (map[s.supervisor] = { name: s.supervisor, faculty: s.faculty, count: 0, ps: 0, atRisk: 0, completed: 0, pubs: 0 }); g.count++; g.ps += s.progressPct; if (s.atRisk) g.atRisk++; if (s.completed) g.completed++; g.pubs += s.publications; });
+  const rows = Object.values(map).sort((a, b) => b.count - a.count).map(g => [g.name, g.faculty, g.count, Math.round(g.ps / g.count) + '%', g.atRisk, g.completed, g.pubs]);
+  downloadCSV('cds-supervisor-performance' + batchTag() + '.csv', ['Supervisor', 'Faculty', 'Scholars', 'Avg progress', 'At risk', 'Awarded', 'Publications'], rows);
+}
+function exportCoursework() {
+  const sc = cdsScholars(); const agg = {};
+  sc.forEach(s => window.scholarCoursework(s).forEach(c => {
+    const k = c.code || c.name; const a = agg[k] || (agg[k] = { code: c.code, name: c.name, passed: 0, failed: 0, absent: 0, pending: 0, total: 0 });
+    a.total++;
+    if (CW_DONE(c.status)) a.passed++; else if (c.status === 'Failed') a.failed++; else if (c.status === 'Absent') a.absent++; else a.pending++;
+  }));
+  const rows = Object.values(agg).map(c => [c.code, c.name, c.passed, c.failed, c.absent, c.pending, c.total, Math.round(c.passed / (c.total || 1) * 100) + '%']);
+  downloadCSV('cds-coursework' + batchTag() + '.csv', ['Code', 'Course', 'Passed', 'Failed', 'Absent', 'Pending', 'Total', 'Pass %'], rows);
 }
 function cdsHead() {
   const r = ROLES[state.role];
   const title = r.scopeFaculty ? 'Dean dashboard' : r.research ? 'Director of Research dashboard' : 'CDS Office dashboard';
   const ro = r.readOnly ? '<div class="ro-banner">● View only — Registrar access</div>' : '';
   const scope = r.scopeFaculty
-    ? `<div class="persona-pick" style="margin-top:12px;position:relative"><select id="dean-pick" autocomplete="off">${M.faculties.map(f => `<option ${f.name === state.deanFaculty ? 'selected' : ''}>${esc(f.name)}</option>`).join('')}</select></div>`
+    ? `<div class="persona-pick" style="margin-top:12px;position:relative;display:inline-block"><select id="dean-pick" autocomplete="off">${M.faculties.map(f => `<option ${f.name === state.deanFaculty ? 'selected' : ''}>${esc(f.name)}</option>`).join('')}</select></div>`
+    : '';
+  const batches = allBatches();
+  const batchSel = batches.length
+    ? `<div class="persona-pick" style="margin-top:12px;position:relative;display:inline-block;margin-left:10px"><select id="cds-batch" autocomplete="off"><option value="all"${state.batchFilter === 'all' ? ' selected' : ''}>All batches</option>${batches.map(b => `<option ${state.batchFilter === b ? 'selected' : ''}>${esc(b)}</option>`).join('')}</select></div>`
     : '';
   return `<div class="container"><h1>${title}</h1>
-    <p>${r.scopeFaculty ? esc(state.deanFaculty) + ' — faculty-level view' : 'Centre-wide research scholar monitoring'}</p>${ro}${scope}</div>`;
+    <p>${r.scopeFaculty ? esc(state.deanFaculty) + ' — faculty-level view' : 'Centre-wide research scholar monitoring'}${state.batchFilter !== 'all' ? ' · ' + esc(state.batchFilter) + ' batch' : ''}</p>${ro}${scope}${batchSel}</div>`;
 }
 function cdsView() {
   const r = ROLES[state.role];
   const sc = cdsScholars();
   const st = aggregate(sc);
-  const facultyBars = (r.scopeFaculty ? M.faculties.filter(f => f.name === state.deanFaculty) : M.faculties);
+  const discList = (M.discontinued || []).filter(s =>
+    (!r.scopeFaculty || s.faculty === state.deanFaculty) &&
+    (state.batchFilter === 'all' || s.batch === state.batchFilter));
+  const discCount = discList.length;
+  const facMap = {};
+  sc.forEach(s => { const f = facMap[s.faculty] || (facMap[s.faculty] = { name: s.faculty, count: 0, ps: 0 }); f.count++; f.ps += s.progressPct; });
+  const facultyBars = Object.values(facMap).map(f => ({ name: f.name, count: f.count, avgProgress: Math.round(f.ps / f.count) })).sort((a, b) => b.count - a.count);
+  const cwAgg = {};
+  sc.forEach(s => window.scholarCoursework(s).forEach(c => {
+    const k = c.code || c.name;
+    const a = cwAgg[k] || (cwAgg[k] = { code: c.code, name: c.name, passed: 0, failed: 0, absent: 0, pending: 0, total: 0 });
+    a.total++;
+    if (CW_DONE(c.status)) a.passed++;
+    else if (c.status === 'Failed') a.failed++;
+    else if (c.status === 'Absent') a.absent++;
+    else a.pending++;
+  }));
+  const cwBars = Object.values(cwAgg);
 
   return `<div class="container">
     <div class="kpi-grid" style="margin-bottom:24px">
@@ -359,6 +512,7 @@ function cdsView() {
       ${kpi('No recent update', st.noUpdate, '> 90 days', st.noUpdate ? 'danger' : 'ok')}
       ${kpi('Publications', st.totalPubs, st.scholarsWithPubs + ' scholars publishing')}
       ${kpi('Completion rate', st.completionRate + '%', st.completed + ' awarded', 'ok')}
+      ${discCount ? kpi('Discontinued', discCount, 'excluded from active stats') : ''}
     </div>
 
     <div class="grid-2">
@@ -373,9 +527,31 @@ function cdsView() {
       </div>
     </div>
 
+    <div class="card card-pad section-gap">
+      <div class="block-title">Pre-Ph.D. coursework — pass / fail <span class="pill">${sc.length} scholars${state.batchFilter !== 'all' ? ' · ' + esc(state.batchFilter) : ''}</span><button class="btn btn-ghost btn-sm" id="csv-coursework" style="margin-left:auto">⬇ CSV</button></div>
+      ${cwBars.map(c => { const pct = Math.round(c.passed / (c.total || 1) * 100); return `<div class="bar-row"><div class="bar-head"><span class="n">${c.code ? '<strong>' + esc(c.code) + '</strong> · ' : ''}${esc(c.name)}</span><span class="v">${c.passed}/${c.total} passed <span class="muted">(${pct}%)</span></span></div>
+        <div class="bar"><span style="width:${pct}%"></span></div>
+        <div class="cw-tags">${c.passed ? `<span class="badge b-ok">${c.passed} passed</span>` : ''}${c.failed ? `<span class="badge b-risk">${c.failed} failed</span>` : ''}${c.absent ? `<span class="badge b-warn">${c.absent} absent</span>` : ''}${c.pending ? `<span class="badge b-info">${c.pending} pending</span>` : ''}</div></div>`; }).join('')}
+    </div>
+
+    <div class="card card-pad section-gap">
+      <div class="block-title">Scholar roster — titles & coursework <span class="pill">${sc.length} scholars${state.batchFilter !== 'all' ? ' · ' + esc(state.batchFilter) : ''}</span><button class="btn btn-primary btn-sm" id="csv-roster" style="margin-left:auto">⬇ Download CSV</button></div>
+      <div class="table-scroll"><table><thead><tr><th>Scholar</th><th>Enroll. no</th><th>Faculty</th><th>Year</th><th>PhD research title</th><th>Coursework</th><th>Progress</th><th>Status</th></tr></thead><tbody>
+        ${sc.map(s => `<tr>
+          <td><div style="display:flex;align-items:center;gap:10px">${av(s)}<div><div class="nm">${esc(s.name)}</div><div class="sm">${esc(s.supervisor)}</div></div></div></td>
+          <td class="sm mono">${s.enroll ? esc(s.enroll) : '—'}</td>
+          <td class="sm">${esc(s.faculty)}</td>
+          <td class="sm">${s.batch ? esc(batchShort(s.batch)) : '—'}</td>
+          <td class="rt-cell">${esc(s.topic || '—')}</td>
+          <td>${cwResult(s)}</td>
+          <td>${minibar(s.progressPct)}</td>
+          <td>${statusBadge(s)}</td></tr>`).join('') || '<tr><td colspan="8"><div class="empty">No scholars.</div></td></tr>'}
+      </tbody></table></div>
+    </div>
+
     <div class="grid-2 section-gap">
       <div class="card card-pad">
-        <div class="block-title">At-risk scholars <span class="pill">${st.atRisk}</span></div>
+        <div class="block-title">At-risk scholars <span class="pill">${st.atRisk}</span><button class="btn btn-ghost btn-sm" id="csv-atrisk" style="margin-left:auto">⬇ CSV</button></div>
         <div class="table-scroll"><table><thead><tr><th>Scholar</th><th>Faculty</th><th>Progress</th><th>Reason</th></tr></thead><tbody>
           ${sc.filter(s => s.atRisk).slice(0, 40).map(s => `<tr>
             <td><div style="display:flex;align-items:center;gap:10px">${av(s)}<div><div class="nm">${esc(s.name)}</div><div class="sm">${esc(s.supervisor)}</div></div></div></td>
@@ -394,7 +570,7 @@ function cdsView() {
     </div>
 
     <div class="card card-pad section-gap">
-      <div class="block-title">Supervisor-wise performance</div>
+      <div class="block-title">Supervisor-wise performance<button class="btn btn-ghost btn-sm" id="csv-supervisors" style="margin-left:auto">⬇ CSV</button></div>
       <div class="table-scroll"><table><thead><tr><th>Supervisor</th><th>Faculty</th><th>Scholars</th><th>Avg progress</th><th>At risk</th><th>Awarded</th><th>Publications</th></tr></thead><tbody>
         ${supervisorRows(sc)}
       </tbody></table></div>
@@ -409,6 +585,18 @@ function cdsView() {
           <td>${s.years} yr</td><td>${minibar(s.progressPct)}</td></tr>`).join('') || '<tr><td colspan="5"><div class="empty">No delayed milestones.</div></td></tr>'}
       </tbody></table></div>
     </div>
+${discList.length ? `
+    <div class="card card-pad section-gap">
+      <div class="block-title">Discontinued scholars <span class="pill">${discList.length}</span></div>
+      <div class="table-scroll"><table><thead><tr><th>Scholar</th><th>Faculty</th><th>Department</th><th>Supervisor</th><th>Year</th><th>Discontinued on</th><th>Reason</th></tr></thead><tbody>
+        ${discList.map(s => `<tr>
+          <td><div style="display:flex;align-items:center;gap:10px">${av(s)}<div class="nm">${esc(s.name)}</div></div></td>
+          <td class="sm">${esc(s.faculty)}</td><td class="sm">${esc(s.dept || '—')}</td>
+          <td class="sm">${esc(s.supervisor)}</td><td class="sm">${s.batch ? esc(batchShort(s.batch)) : '—'}</td>
+          <td class="sm">${s.discontinuedOn ? esc(s.discontinuedOn) : '<span class="muted">Not recorded</span>'}</td>
+          <td class="sm">${s.reason ? esc(s.reason) : '<span class="muted">Not recorded</span>'}</td></tr>`).join('')}
+      </tbody></table></div>
+    </div>` : ''}
   </div>`;
 }
 function aggregate(sc) {
@@ -462,7 +650,10 @@ function wireGlobal() {
   }
   document.getElementById('page-head').addEventListener('change', e => {
     if (e.target.id === 'dean-pick') { state.deanFaculty = e.target.value; render(); }
+    if (e.target.id === 'cds-batch') { state.batchFilter = e.target.value; render(); }
   });
+  [['csv-roster', exportRoster], ['csv-atrisk', exportAtRisk], ['csv-supervisors', exportSupervisors], ['csv-coursework', exportCoursework]]
+    .forEach(([id, fn]) => { const b = document.getElementById(id); if (b) b.onclick = fn; });
   const so = document.getElementById('signout');
   if (so) so.onclick = e => {
     e.preventDefault();

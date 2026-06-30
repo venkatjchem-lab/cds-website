@@ -1,6 +1,20 @@
 /* ============================================================
    CDS Research Portal — Aurora Indigo theme (prototype)
    ============================================================ */
+/* scholar search combobox (separate from the dropdown) */
+.scholar-search input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--line); border-radius: var(--radius-sm);
+  font-family: inherit; font-size: 0.9rem; color: var(--ink); background: var(--white); outline: none; }
+.scholar-search input:focus { border-color: var(--violet-lt); }
+.ss-results { position: absolute; top: calc(100% + 4px); left: 0; right: 0; max-height: 320px; overflow-y: auto;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: var(--shadow-lg); z-index: 60; display: none; }
+.ss-results.open { display: block; }
+.ss-item { padding: 9px 13px; cursor: pointer; border-bottom: 1px solid var(--line); }
+.ss-item:last-child { border-bottom: none; }
+.ss-item:hover, .ss-item.active { background: #faf9ff; }
+.ss-item .nm { font-weight: 600; color: var(--ink); font-size: 0.88rem; }
+.ss-item .meta { font-size: 0.76rem; color: var(--muted); margin-top: 1px; }
+.ss-empty { padding: 14px; color: var(--muted); font-size: 0.85rem; text-align: center; }
+
 :root {
   --navy:       #4f46e5;
   --navy-dark:  #312e81;
@@ -127,6 +141,15 @@ main { padding: 28px 0 64px; }
 .bar-head .v { font-weight: 800; color: var(--violet); }
 .bar { height: 9px; background: var(--line); border-radius: 6px; overflow: hidden; }
 .bar > span { display: block; height: 100%; background: var(--grad); border-radius: 6px; transition: width 0.6s ease; }
+.scholar-filters { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 12px; align-items: flex-end; }
+.scholar-filters .sf { display: flex; flex-direction: column; gap: 5px; }
+.scholar-filters .sf > span { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+.scholar-filters #scholar-pick { min-width: 280px; }
+.research-title { font-size: 1.05rem; font-weight: 600; color: var(--ink); line-height: 1.5; margin: 4px 0 10px; }
+.rt-cell { max-width: 360px; min-width: 220px; font-size: 0.84rem; line-height: 1.4; color: var(--ink); white-space: normal; }
+.mono { font-variant-numeric: tabular-nums; letter-spacing: 0.2px; white-space: nowrap; }
+.cw-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.cw-tags .badge { font-size: 0.68rem; padding: 2px 9px; }
 
 /* ── Tables ── */
 table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }

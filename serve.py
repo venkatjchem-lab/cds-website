@@ -1,6 +1,9 @@
 import os, sys
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 import http.server
-httpd = http.server.HTTPServer(('localhost', 3344), http.server.SimpleHTTPRequestHandler)
-print('Serving at http://localhost:3344')
+port = int(os.environ.get('PORT', '3344'))
+# ThreadingHTTPServer so parallel browser requests don't block each other
+Server = getattr(http.server, 'ThreadingHTTPServer', http.server.HTTPServer)
+httpd = Server(('localhost', port), http.server.SimpleHTTPRequestHandler)
+print('Serving at http://localhost:%d' % port)
 httpd.serve_forever()

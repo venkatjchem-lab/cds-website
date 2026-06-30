@@ -25,11 +25,13 @@ const JOURNALS = [
   'Materials Today', 'Frontiers in Pharmacology'
 ];
 
+// Official Pre-Ph.D. coursework (CDS / CAMU ERP): [name, code, credits]
 const COURSES = [
-  ['Research Methodology', 4], ['Research & Publication Ethics', 2],
-  ['Advanced Statistics', 3], ['Domain Elective I', 4], ['Domain Elective II', 4]
+  ['Research & Publication Ethics', 'RPE', 2],
+  ['Research Methodology and Biostatistics', 'RMB', 4],
+  ['Theoretical Foundation & Core Subject', 'TFCS', 4],
+  ['Literature Review and Research Proposal', 'LRRP', 4]
 ];
-const GRADES = ['O', 'A+', 'A', 'B+'];
 
 /* ---- seeded pseudo-random ---- */
 function hashStr(s) {
@@ -50,19 +52,37 @@ function fmtDate(d) {
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 function pick(rnd, arr) { return arr[Math.floor(rnd() * arr.length)]; }
+// expected milestone stage (0..7) given pace-adjusted months since batch commencement
+function stageForMonths(mo) {
+  const reach = [6, 12, 16, 22, 28, 38, 41]; // months to reach stage 1..7 (per RDC schedule)
+  let st = 0; for (const t of reach) if (mo >= t) st++;
+  return st;
+}
 
 /* ---- build one scholar's synthetic record ---- */
 function buildScholar(raw, idx) {
   const rnd = mulberry32(hashStr(raw.n + raw.g));
   const fullTime = raw.m === 'Full-Time';
 
-  const years = 1 + Math.floor(rnd() * 5);            // 1..5 years enrolled
-  const enrolledYear = 2026 - years;
   const pace = fullTime ? 1.45 : 1.0;
-  const expectedStage = Math.min(7, years * pace);
-  const jitter = rnd() * 2.6 - 0.7;                    // can be ahead or behind
-  let stage = Math.round(expectedStage - jitter);
-  stage = Math.max(0, Math.min(7, stage));
+  const start = raw.batch && COMMENCEMENT[raw.batch];
+  let years, enrolledYear, expectedStage, stage;
+  if (start) {
+    // real cohort — derive enrolment and expected progress from batch commencement
+    const monthsIn = Math.max(0, (NOW.getFullYear() - start.getFullYear()) * 12 + (NOW.getMonth() - start.getMonth()));
+    enrolledYear = start.getFullYear();
+    years = Math.max(1, Math.round(monthsIn / 12));
+    expectedStage = stageForMonths(monthsIn * pace);
+    const lag = Math.max(0, Math.round(rnd() * 1.8 - 0.4));   // mostly on-track, some 1–2 stages behind
+    stage = Math.max(0, Math.min(7, expectedStage - lag));
+  } else {
+    // no batch on record — fall back to seeded synthetic history
+    years = 1 + Math.floor(rnd() * 5);
+    enrolledYear = 2026 - years;
+    expectedStage = Math.min(7, years * pace);
+    const jitter = rnd() * 2.6 - 0.7;
+    stage = Math.max(0, Math.min(7, Math.round(expectedStage - jitter)));
+  }
 
   const completed = stage === 7;
   let progressPct = completed ? 100
@@ -75,7 +95,7 @@ function buildScholar(raw, idx) {
   const lastUpdate = daysAgo(dAgo);
   const noUpdate = dAgo > 90 && !completed;
 
-  const publications = Math.max(0, Math.round((stage / 7) * (1 + rnd() * 4.5)));
+  const publications = 0;
   const attendance = 72 + Math.floor(rnd() * 28);
 
   const delayed = !completed && (expectedStage - stage) >= 1.3;
@@ -94,23 +114,52 @@ function buildScholar(raw, idx) {
     noUpdate, delayed, atRisk, completed,
     expectedSubmission,
     batch: raw.batch || null,
+    enroll: raw.en || null,
     cw: raw.cw || null,
+    status: raw.status || 'Active',
+    discontinued: raw.status === 'Discontinued',
+    discontinuedOn: raw.discontinuedOn || null,
+    reason: raw.reason || null,
     _rnd: hashStr(raw.n + raw.g)
   };
+}
+
+/* ---- RDC review schedule (official RDCRACDRC dates): months from batch commencement ---- */
+const RDC_SCHEDULE = [
+  ['RDC-I', 'Constitution of RDC Committee', 8],
+  ['RDC-II', 'Research Proposal / Synopsis Review', 12],
+  ['RDC-III', '1st Progress Report Review', 16],
+  ['RDC-IV', '2nd Progress Report Review', 22],
+  ['RDC-V', '3rd Progress Report Review', 28],
+  ['RDC-VI', '4th Progress Report Review', 34],
+  ['RDC-VII', 'Pre-Submission Review', 40],
+  ['RDC-VIII', 'Final Thesis Submission Review', 41]
+];
+const COMMENCEMENT = { 'July 2025': new Date(2025, 7, 22), 'January 2026': new Date(2026, 1, 27) };
+function addMonths(d, m) { const x = new Date(d.getTime()); x.setMonth(x.getMonth() + m); return x; }
+function rdcMilestones(s) {
+  const start = COMMENCEMENT[s.batch] || COMMENCEMENT['January 2026'];
+  return RDC_SCHEDULE.map(([code, title, off]) => {
+    const dt = addMonths(start, off);
+    const status = dt < NOW ? 'done' : ((dt - NOW) / 86400000 <= 75 ? 'current' : 'upcoming');
+    return { name: code + ' — ' + title, status, date: fmtDate(dt) };
+  });
+}
+
+/* ---- per-scholar Pre-Ph.D. coursework (real cw, else synthetic from stage) ---- */
+function scholarCoursework(s) {
+  return s.cw
+    ? s.cw.map(c => ({ name: c.n, code: c.code, credits: c.cr, status: c.s }))
+    : COURSES.map((c, i) => {
+        const done = i < Math.min(COURSES.length, s.stage + 1);
+        return { name: c[0], code: c[1], credits: c[2], status: done ? 'Completed' : 'Pending' };
+      });
 }
 
 /* ---- per-scholar detail (lazy, seeded) ---- */
 function scholarDetail(s) {
   const rnd = mulberry32(s._rnd);
-  const milestones = MILESTONES.map((m, i) => {
-    let status = i < s.stage ? 'done' : i === s.stage ? 'current' : 'upcoming';
-    if (s.completed) status = 'done';
-    const offset = (s.stage - i) * (s.mode === 'Full-Time' ? 130 : 200);
-    const date = status === 'done' ? fmtDate(daysAgo(offset + Math.floor(rnd() * 40)))
-      : status === 'current' ? 'In progress'
-      : 'Expected ' + (NOW.getFullYear() + Math.ceil((i - s.stage) / 2));
-    return { name: m, status, date };
-  });
+  const milestones = rdcMilestones(s);
 
   const pubs = [];
   for (let i = 0; i < s.publications; i++) {
@@ -123,13 +172,7 @@ function scholarDetail(s) {
     });
   }
 
-  const coursework = s.cw
-    ? s.cw.map(c => ({ name: c.n, status: c.s }))   // real status-only coursework (e.g. July 2025 batch)
-    : COURSES.map((c, i) => {
-        const done = i < Math.min(COURSES.length, s.stage + 2);
-        return { name: c[0], credits: c[1], grade: done ? pick(rnd, GRADES) : '—',
-          status: done ? 'Completed' : 'Pending' };
-      });
+  const coursework = scholarCoursework(s);
 
   const meetings = [];
   const mCount = 2 + Math.floor(rnd() * 4);
@@ -153,7 +196,9 @@ function scholarDetail(s) {
 
 /* ---- aggregates ---- */
 function buildModel() {
-  const scholars = (window.RAW_SCHOLARS || []).map(buildScholar);
+  const all = (window.RAW_SCHOLARS || []).map(buildScholar);
+  const discontinued = all.filter(s => s.discontinued);
+  const scholars = all.filter(s => !s.discontinued);   // active only — drives all dashboards
 
   const faculties = {};
   scholars.forEach(s => {
@@ -179,10 +224,12 @@ function buildModel() {
 
   return {
     scholars,
+    discontinued,
     faculties: Object.values(faculties).sort((a, b) => b.count - a.count),
     supervisors: Object.values(supervisors),
     stats: {
       total: scholars.length,
+      discontinued: discontinued.length,
       facultyCount: Object.keys(faculties).length,
       supervisorCount: Object.keys(supervisors).length,
       atRisk: scholars.filter(s => s.atRisk).length,
@@ -200,5 +247,6 @@ function buildModel() {
 
 window.MILESTONES = MILESTONES;
 window.scholarDetail = scholarDetail;
+window.scholarCoursework = scholarCoursework;
 window.fmtDate = fmtDate;
 window.MODEL = buildModel();
